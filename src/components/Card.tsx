@@ -7,6 +7,7 @@ function Card() {
       style={{ backgroundColor: "lightblue", height: "200px", width: "150px" }}
     >
       <p>Card</p>
+      <p>Todo tasks</p>
     </div>
   );
 }
