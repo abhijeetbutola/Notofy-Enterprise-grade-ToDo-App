@@ -14,10 +14,11 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
-  "rules": {},
+  "rules": { "linebreak-style": ["error", "windows"] },
   "settings": {
     "react": {
       "version": "detect"
     }
   }
 }
+
