@@ -3,9 +3,7 @@ import "../styles/Card.css";
 
 function Card() {
   return (
-    <div
-      style={{ backgroundColor: "lightblue", height: "200px", width: "150px" }}
-    >
+    <div className="card">
       <p>Card</p>
       <p>Todo tasks</p>
     </div>

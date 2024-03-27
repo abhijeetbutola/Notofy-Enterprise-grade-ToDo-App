@@ -1,12 +1,11 @@
-<<<<<<< Updated upstream
-div {
-  /* background-color: red; */
-=======
 .card {
   background-color: lightblue;
   height: 200px;
   flex-grow: 1;
-  /* width: 100%; */
+  margin-bottom: 1px;
+  margin-right: 1px;
+  /* width: 100px; */
   /* margin: 10px; */
->>>>>>> Stashed changes
+  flex-basis: calc(100% / 4);
+  max-width: calc(100% / 3);
 }

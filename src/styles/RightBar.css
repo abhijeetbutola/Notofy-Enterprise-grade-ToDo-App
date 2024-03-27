@@ -1,3 +1,5 @@
 .rightbar {
   background-color: lightgreen;
+  width: 20%;
+  max-width: 200px;
 }
