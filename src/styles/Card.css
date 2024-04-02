@@ -3,9 +3,16 @@
   height: 200px;
   flex-grow: 1;
   margin-bottom: 1px;
-  margin-right: 1px;
+  /* margin-right: 1px; */
   /* width: 100px; */
   /* margin: 10px; */
-  flex-basis: calc(100% / 4);
+  flex-basis: calc(100% / 1);
   max-width: calc(100% / 3);
+}
+
+.check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }

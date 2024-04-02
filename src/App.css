@@ -1,6 +1,5 @@
 * {
   box-sizing: border-box;
-  text-align: center;
 }
 
 html,
@@ -25,15 +24,6 @@ body {
   margin: 0px;
   padding: 0px;
   overflow-y: auto;
-}
-
-.header-section {
-  background-color: rgb(218, 218, 87);
-  font-size: 30px;
-  font-weight: bold;
-  height: 50px;
-  min-height: 50px;
-  line-height: 50px;
 }
 
 .appcontent {

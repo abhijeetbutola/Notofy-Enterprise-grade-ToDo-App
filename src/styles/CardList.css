@@ -4,5 +4,19 @@
   flex-grow: 1;
   flex-wrap: wrap;
   height: 100%;
+  gap: 2px;
+  align-items: start;
   /* align-items: flex-start; */
+}
+
+.addButton-div {
+  display: flex;
+  flex-grow: 1;
+}
+
+.addButton {
+  height: 200px;
+  flex-basis: calc(100% / 1);
+  max-width: calc(100% / 1);
+  flex-grow: 1;
 }

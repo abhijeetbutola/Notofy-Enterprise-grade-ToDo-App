@@ -1,7 +1,7 @@
 .leftbar {
   overflow-y: auto;
   background-color: lightpink;
-  width: 20%;
+  min-width: 20%;
   max-width: 200px;
   /* margin: 10px; */
 }
