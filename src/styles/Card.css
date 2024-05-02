@@ -1,18 +1,18 @@
 .card {
-  background-color: lightblue;
-  height: 200px;
-  flex-grow: 1;
-  margin-bottom: 1px;
-  /* margin-right: 1px; */
-  /* width: 100px; */
-  /* margin: 10px; */
-  flex-basis: calc(100% / 1);
-  max-width: calc(100% / 3);
+  /* height: 180px; */
+  width: 250px;
+  /* max-width: 500px; */
+  /* flex: 1 1 calc(33.33% - 30px);  */
+  /* Adjust the width of each card */
+  /* max-width: calc(
+    33.33% - 30px
+  );  */
+  /* Ensure each card's width does not exceed one-third of the container's width */
 }
-
+/* 
 .check {
-  display: flex;
   justify-content: center;
   align-items: center;
   gap: 4px;
-}
+} */
+/*  */

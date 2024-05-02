@@ -1,6 +1,8 @@
 export interface ITask {
   title: string;
-  task: string;
+  tasks?: Array<Object>;
   createdDate: Date;
-  isCompleted: boolean;
+  dueDate: Date;
+  status?: string;
+  tags?: Array<string>;
 }

@@ -16,8 +16,11 @@ root.render(
   </React.StrictMode>,
 );
 
-// add button customize
+// add button customize - done
 // grid
 // create modal window
 // work on adding task to array
-//
+// sort functionality - name, date
+// collapsable sidebar
+// search onSubmit - done  Q- how are we getting our original set of cards back when clearing the search term
+// add task by title

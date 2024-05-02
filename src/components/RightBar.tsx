@@ -5,11 +5,13 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import dayjs from "dayjs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDate } from "../store/slices/calendarSlice.ts";
+import { RootState } from "../store/store.ts";
 
 function RightBar() {
   const dispatch = useDispatch();
+  const date = useSelector((state: RootState) => state.calendar.value);
   const handleChange = (e) => {
     // console.log(e.$d);
     dispatch(setDate(e.$d));
@@ -17,15 +19,15 @@ function RightBar() {
 
   return (
     <>
-      <div className="rightbar">
-        <p>Right SideBar</p>
-        <div className="calendar">
+      <div className="rightbar rounded-md my-4 bg-white shadow-md mr-4 flex">
+        <div className="flex">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["StaticDatePicker"]}>
               <DemoItem>
                 <StaticDatePicker
-                  defaultValue={dayjs(new Date())}
+                  value={dayjs(date)}
                   onChange={handleChange}
+                  slotProps={{ actionBar: { actions: [] } }}
                 />
               </DemoItem>
             </DemoContainer>

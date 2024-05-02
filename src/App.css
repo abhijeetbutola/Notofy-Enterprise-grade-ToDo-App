@@ -7,6 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   height: 100%;
+  background-color: rgb(245, 243, 235);
 }
 
 #root {
@@ -17,18 +18,36 @@ body {
   height: 100vh;
 }
 
-.main-app {
-  display: flex;
-  flex: 1;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  overflow-y: auto;
-}
-
 .appcontent {
   display: flex;
+  margin-left: auto;
+  margin-right: auto;
   flex: 1;
   height: 100%;
-  /* overflow-y: auto; */
+  max-width: 1920px;
+  overflow: hidden;
+  justify-content: space-between;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  width: 50%; /* Covers half of the screen */
+  height: 100%; /* Full height of the viewport */
+  background-color: #f4f4f4;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out; /* Smooth transition */
+  transform: translateX(100%); /* Initially hidden */
+  padding: 20px;
+}
+
+/* Sidebar visible */
+.sidebar.visible {
+  transform: translateX(0);
+}
+
+/* Sidebar hidden */
+.sidebar.hidden {
+  transform: translateX(100%);
 }
