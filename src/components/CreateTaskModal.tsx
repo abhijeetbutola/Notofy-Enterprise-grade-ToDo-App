@@ -6,17 +6,26 @@ import Fade from "@mui/material/Fade";
 // import Button from "@mui/material/Button";
 import Button from "./Button.tsx";
 import CustomText from "./CustomText.tsx";
+import generateTimestampId from "./idGenerator.js";
 // import Input from "./Input.tsx";
-import {
-  title,
-  description,
-  dueDate,
-  status,
-  addTag,
-  // work on removeTag functionality
-} from "../store/slices/modalValues.ts";
-import { useDispatch } from "react-redux";
+// import {
+//   title,
+//   description,
+//   dueDate,
+//   status,
+//   addTag,
+//   // work on removeTag functionality
+// } from "../store/slices/modalValues.ts";
+// import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+// import { createDateStrForV6InputFromSections } from "@mui/x-date-pickers/internals";
+// import { dueDate } from "../store/slices/modalValues.ts";
+import { useState, useEffect } from "react";
+// dropdown imports
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,31 +44,49 @@ const style = {
 
 // react hook form
 
-export default function CreateTaskModal({ onClick }) {
+export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const dispatch = useDispatch();
+  const [form, setForm] = useState({
+    id: "",
+    title: "",
+    tasks: [],
+    createdDate: new Date(),
+    dueDate: null,
+    status: "",
+    tags: "",
+  });
 
-  const handleTitleChange = (e) => {
-    // console.log(e.target.value);
-    dispatch(title(e.target.value));
+  // const [status, setStatus] = useState("");
+
+  const handleInputChange = (name: string, value) => {
+    setForm({ ...form, [name]: value });
+    // setStatus(value);
   };
 
-  const handleDescriptionChange = (e) => {
-    dispatch(description(e.target.value));
+  const handleCreate = () => {
+    if (card) {
+      onEditClick({ ...form, form });
+      handleClose();
+    } else {
+      onCreateClick({ ...form, tags: [], id: generateTimestampId() });
+      // console.log(form);
+      handleClose();
+    }
+    // console.log(form.tags);
   };
-  const handleDueDateChange = (e) => {
-    // dispatch(dueDate(e.target.value));
-    dispatch(dueDate(new Date()));
-  };
-  const handleStatusChange = (e) => {
-    dispatch(status(e.target.value));
-  };
-  const handleTagsChange = (e) => {
-    dispatch(addTag(e.target.value));
-  };
+
+  useEffect(() => {
+    if (card) {
+      setForm({ ...card, dueDate: "2024-05-13" });
+      handleOpen();
+    }
+    console.log(card);
+  }, [card]);
+
+  console.log(form.dueDate);
 
   return (
     <div>
@@ -93,16 +120,17 @@ export default function CreateTaskModal({ onClick }) {
               type="text"
               className="border-2"
               placeholder="Enter Title here"
-              onChange={handleTitleChange}
+              onChange={(e) => handleInputChange("title", e.target.value)}
+              value={form.title}
             />
             {/* <Input type="text" className='border-2' placeholder='Title' onChange={handleChange} value={title}></Input> */}
-            <CustomText>Description</CustomText>
+            {/* <CustomText>Description</CustomText>
             <input
               type="text"
               className="border-2"
               placeholder="Enter Description here"
-              onChange={handleDescriptionChange}
-            />
+              onChange={(e) => handleInputChange("description", e.target.value)}
+            /> */}
             <div className="flex ">
               <div className="grow">
                 <CustomText>Due Date</CustomText>
@@ -110,18 +138,39 @@ export default function CreateTaskModal({ onClick }) {
                   type="date"
                   className="border-2"
                   placeholder="Select a Date"
-                  onChange={handleDueDateChange}
+                  onChange={(e) => handleInputChange("dueDate", e.target.value)}
+                  value={form.dueDate ? form.dueDate : ""}
                 />
               </div>
               <div className="">
                 <CustomText>Status</CustomText>
 
-                <input
+                {/* <input
                   type="text"
                   className="border-2"
                   placeholder="Select Status"
-                  onChange={handleStatusChange}
-                />
+                  onChange={(e) => handleInputChange("status", e.target.value)}
+                /> */}
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Select
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={form.status}
+                      label="Select"
+                      onChange={(e) =>
+                        handleInputChange("status", e.target.value)
+                      }
+                    >
+                      <MenuItem value={"planned"}>Planned</MenuItem>
+                      <MenuItem value={"ongoing"}>Ongoing</MenuItem>
+                      <MenuItem value={"completed"}>Completed</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
               </div>
             </div>
             <CustomText>Tags</CustomText>
@@ -129,14 +178,14 @@ export default function CreateTaskModal({ onClick }) {
               type="text"
               className="border-2"
               placeholder="Type here"
-              onChange={handleTagsChange}
+              onChange={(e) => handleInputChange("tags", e.target.value)}
             />
             <div className="my-2">
               <Button
                 className="border-2 border-green-700 bg-green-700 text-white rounded-xl px-1"
-                onClick={onClick}
+                onClick={handleCreate}
               >
-                Create
+                {card ? "Edit" : "Create"}
               </Button>
             </div>
           </Box>

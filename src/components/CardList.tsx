@@ -19,13 +19,15 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function CardList() {
-  let date: Date | null;
-  date = useSelector((state: RootState) => state.calendar.value);
+  const date: Date | null = useSelector(
+    (state: RootState) => state.calendar.value,
+  );
   const dispatch = useDispatch();
   const [filter, setFilter] = useState({ sort: false });
 
   const [cards, setCards] = useState<Array<ITask>>([
     {
+      id: "lvwchi4kvkrny",
       tasks: [
         {
           task: "Complete assignment",
@@ -75,6 +77,7 @@ function CardList() {
       tags: ["home", "personal", "home", "work"],
     },
     {
+      id: "lvwcitfz8qp4b",
       tasks: [
         {
           task: "Complete assignment",
@@ -124,6 +127,7 @@ function CardList() {
       tags: ["home", "work", "important"],
     },
     {
+      id: "lvwcjk2u7a4j5",
       tasks: [
         {
           task: "Complete assignment",
@@ -173,6 +177,7 @@ function CardList() {
       tags: ["urgent", "home", "urgent", "important"],
     },
     {
+      id: "lvwck3whhgmtz",
       tasks: [
         {
           task: "Complete assignment",
@@ -222,6 +227,7 @@ function CardList() {
       tags: ["work", "work", "urgent", "home"],
     },
     {
+      id: "lvwckckp00kyw",
       tasks: [
         {
           task: "Complete assignment",
@@ -271,6 +277,7 @@ function CardList() {
       tags: ["important", "home", "important", "important", "home"],
     },
     {
+      id: "lvwckwe9u5wn1",
       tasks: [
         {
           task: "Complete assignment",
@@ -320,6 +327,7 @@ function CardList() {
       tags: ["personal", "home", "urgent"],
     },
     {
+      id: "lvwclaw9bhu9f",
       tasks: [
         {
           task: "Complete assignment",
@@ -369,6 +377,7 @@ function CardList() {
       tags: ["home", "urgent", "urgent", "home", "home"],
     },
     {
+      id: "lvwclkg7w7t6l",
       tasks: [
         {
           task: "Complete assignment",
@@ -418,6 +427,7 @@ function CardList() {
       tags: ["urgent"],
     },
     {
+      id: "lvwclv8k75dxj",
       tasks: [
         {
           task: "Complete assignment",
@@ -467,6 +477,7 @@ function CardList() {
       tags: ["urgent", "urgent", "work", "important", "work"],
     },
     {
+      id: "lvwcm87t52u6g",
       tasks: [
         {
           task: "Complete assignment",
@@ -516,8 +527,11 @@ function CardList() {
       tags: ["home", "personal", "work", "important", "urgent"],
     },
   ]);
+  console.log(cards);
 
   const [filterCards, setFilterCards] = useState([...cards]);
+
+  const [selectedTask, setSelectedTask] = useState<ITask>();
 
   useEffect(() => {
     if (!date) {
@@ -535,24 +549,6 @@ function CardList() {
       }),
     );
   }, [date, cards]);
-
-  // console.log(filterCards);
-
-  // useEffect(() => {
-  //   console.log("hello");
-  // }, [cards]);
-
-  // const handleTaskUpdate = (
-  //   value: boolean,
-  //   indexOfMicroTask: number,
-  //   index: number,
-  // ) => {
-  //   const t = [...cards];
-  //   t[index].tasks[indexOfMicroTask].completed = value;
-  //   setCards(t);
-  // };
-  // console.log(cards);
-  // console.log(filterCards);
 
   const handleFormSubmit = (searchTerm: string) => {
     if (searchTerm !== "") {
@@ -597,41 +593,10 @@ function CardList() {
     }
   };
 
-  const modalValues = useSelector((state: any) => state.modalValues);
-  const tagsValues = useSelector((state: any) => state.value);
+  const handleCreateButtonClick = (card) => {
+    console.log(card);
 
-  const { title, dueDate, status } = modalValues;
-  const tags = tagsValues;
-
-  const handleCreateButtonClick = () => {
-    // const title = useSelector((state: any) => state.modalValues.value.title);
-    // // const description = useSelector(
-    // //   (state: any) => state.modalValues.value.description,
-    // // );
-    // const dueDate = useSelector(
-    //   (state: any) => state.modalValues.value.dueDate,
-    // );
-    // const status = useSelector((state: any) => state.modalValues.value.status);
-    // const tags = useSelector((state: any) => state.modalValues.value.tags);
-    // const createdDate = new Date();
-
-    // console.log(title);
-    // console.log("hello");
-
-    ////////////do this by using useState//////////////////
-
-    setCards([
-      {
-        // id: Math.random(),
-        title: title,
-        tasks: [],
-        createdDate: new Date(),
-        dueDate: dueDate,
-        status: status,
-        tags: tags,
-      },
-      ...cards,
-    ]);
+    setCards([card, ...cards]);
   };
 
   const handleDateChange = (e) => {
@@ -646,6 +611,15 @@ function CardList() {
         setDate(new Date(new Date(date).setDate(new Date(date).getDate() - 1))),
       );
     }
+  };
+
+  const handleEditTask = (card) => {
+    const index = cards.findIndex((cardInCards) => {
+      return cardInCards.id === card.id;
+    });
+    const tempArray = [...cards];
+    tempArray[index] = card;
+    setCards(tempArray);
   };
 
   // console.log(date);
@@ -686,7 +660,11 @@ function CardList() {
           </DemoContainer>
         </LocalizationProvider>
       </div>
-      <MyModal onClick={handleCreateButtonClick} />
+      <MyModal
+        card={selectedTask}
+        onCreateClick={handleCreateButtonClick}
+        onEditClick={handleEditTask}
+      />
       <div className="cards flex mx-8 mt-4">
         <div>
           <p className="mb-4 font-semibold text-sm">Planned</p>
@@ -696,9 +674,7 @@ function CardList() {
               .map((card, index) => (
                 <Card
                   {...card}
-                  // onCheckboxClick={(e, indexOfMicroTask) =>
-                  //   handleTaskUpdate(e, indexOfMicroTask, index)
-                  // }
+                  onEditClick={setSelectedTask}
                   key={index}
                 ></Card>
               ))}
@@ -712,9 +688,7 @@ function CardList() {
               .map((card, index) => (
                 <Card
                   {...card}
-                  // onCheckboxClick={(e, indexOfMicroTask) =>
-                  //   handleTaskUpdate(e, indexOfMicroTask, index)
-                  // }
+                  onEditClick={setSelectedTask}
                   key={index}
                 ></Card>
               ))}
@@ -728,28 +702,13 @@ function CardList() {
               .map((card, index) => (
                 <Card
                   {...card}
-                  // onCheckboxClick={(e, indexOfMicroTask) =>
-                  //   handleTaskUpdate(e, indexOfMicroTask, index)
-                  // }
+                  onEditClick={setSelectedTask}
                   key={index}
                 ></Card>
               ))}
           </div>
         </div>
       </div>
-      {/* <div className="cardlist mx-4 gap-x-8 gap-y-1">
-        {filterCards
-          .filter((card) => card.status === "planned")
-          .map((card, index) => (
-            <Card
-            {...card}
-            // onCheckboxClick={(e, indexOfMicroTask) =>
-              //   handleTaskUpdate(e, indexOfMicroTask, index)
-            // }
-            key={index}
-            ></Card>
-          ))}
-        </div> */}
     </div>
   );
 }

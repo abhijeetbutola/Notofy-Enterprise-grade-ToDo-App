@@ -9,9 +9,10 @@ import { MdDeleteOutline } from "react-icons/md";
 interface ICard extends ITask {
   // onCheckboxClick: (value: boolean, indexOfMicroTask: number) => void;
   // indexOfMicroTask: number;
+  onEditClick?: (value: ITask) => void;
 }
 
-function Card({ title, dueDate, tags }: ICard) {
+function Card({ title, dueDate, tags, onEditClick, ...rest }: ICard) {
   // const handleCheck = (
   //   e: React.ChangeEvent<HTMLInputElement>,
   //   indexOfMicroTask: number,
@@ -19,6 +20,15 @@ function Card({ title, dueDate, tags }: ICard) {
   //   // console.log(e.target.checked);
   //   onCheckboxClick(e.target.checked, indexOfMicroTask);
   // };
+
+  const onEdit = () => {
+    onEditClick?.({
+      title,
+      dueDate,
+      tags,
+      ...rest,
+    });
+  };
 
   return (
     <div className="card border rounded-md mb-3">
@@ -45,6 +55,9 @@ function Card({ title, dueDate, tags }: ICard) {
         </p>
       </div>
       <div className="flex items-center mb-2 px-4">
+        <button className="text-[12px] text-gray-700" onClick={onEdit}>
+          Edit
+        </button>
         <MdDeleteOutline />
         <a className="text-[12px] px-2 text-red-700">Delete</a>
       </div>
