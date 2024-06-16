@@ -1,40 +1,30 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Typography } from "@mui/material";
+import "../App.css"; // Import the CSS file where the font is defined
 
-function CustomText({
-  variant = "body1",
-  color = "inherit",
-  align = "left",
-  children,
-  ...otherProps
-}) {
-  return (
-    <Typography variant={variant} color={color} align={align} {...otherProps}>
-      {children}
-    </Typography>
-  );
+interface CustomTextProps {
+  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  color?: string;
+  align?: "left" | "center" | "right" | "justify";
+  children: React.ReactNode;
 }
 
-CustomText.propTypes = {
-  variant: PropTypes.oneOf([
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "subtitle1",
-    "subtitle2",
-    "body1",
-    "body2",
-    "caption",
-    "button",
-    "overline",
-  ]),
-  color: PropTypes.string,
-  align: PropTypes.oneOf(["inherit", "left", "center", "right", "justify"]),
-  children: PropTypes.node.isRequired,
+const CustomText: React.FC<CustomTextProps> = ({
+  variant,
+  color,
+  align,
+  children,
+}) => {
+  // Determine the HTML tag based on the variant
+  const Tag = variant.startsWith("h") ? variant : "p";
+
+  // Apply styles based on the props
+  const styles = {
+    color: color,
+    textAlign: align as "left" | "center" | "right" | "justify",
+    fontFamily: "Roboto, sans-serif", // Apply the font
+  };
+
+  return <Tag style={styles}>{children}</Tag>;
 };
 
 export default CustomText;

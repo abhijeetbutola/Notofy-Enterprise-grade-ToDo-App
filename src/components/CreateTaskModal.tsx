@@ -3,29 +3,16 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-// import Button from "@mui/material/Button";
 import Button from "./Button.tsx";
 import CustomText from "./CustomText.tsx";
 import generateTimestampId from "./idGenerator.js";
-// import Input from "./Input.tsx";
-// import {
-//   title,
-//   description,
-//   dueDate,
-//   status,
-//   addTag,
-//   // work on removeTag functionality
-// } from "../store/slices/modalValues.ts";
-// import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
-// import { createDateStrForV6InputFromSections } from "@mui/x-date-pickers/internals";
-// import { dueDate } from "../store/slices/modalValues.ts";
 import { useState, useEffect } from "react";
 // dropdown imports
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 const style = {
   position: "absolute" as "absolute",
@@ -44,10 +31,15 @@ const style = {
 
 // react hook form
 
-export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function CreateTaskModal({
+  onCreateClick,
+  onEditClick,
+  card,
+  closeModal,
+  openModal,
+  openModalFunc,
+}) {
+  // const [open, setOpen] = React.useState(false);
 
   const [form, setForm] = useState({
     id: "",
@@ -59,49 +51,43 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
     tags: "",
   });
 
-  // const [status, setStatus] = useState("");
-
   const handleInputChange = (name: string, value) => {
     setForm({ ...form, [name]: value });
-    // setStatus(value);
   };
 
   const handleCreate = () => {
     if (card) {
       onEditClick({ ...form, form });
-      handleClose();
+      closeModal();
     } else {
       onCreateClick({ ...form, tags: [], id: generateTimestampId() });
-      // console.log(form);
-      handleClose();
+      closeModal();
     }
-    // console.log(form.tags);
   };
 
   useEffect(() => {
     if (card) {
       setForm({ ...card, dueDate: "2024-05-13" });
-      handleOpen();
-    }
+    } else
+      setForm({
+        id: "",
+        title: "",
+        tasks: [],
+        createdDate: new Date(),
+        dueDate: null,
+        status: "",
+        tags: "",
+      });
     console.log(card);
   }, [card]);
 
-  console.log(form.dueDate);
-
   return (
     <div>
-      <Button
-        onClick={handleOpen}
-        className="w-64 border-2 my-2 px-1 bg-cover bg-center bg-blue-200 ml-4 bg-no-repeat addButton rounded-md"
-        disabled={false}
-      >
-        + Add Task
-      </Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={openModal}
+        onClose={closeModal}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -110,12 +96,14 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={openModal}>
           <Box sx={style}>
-            <CustomText variant="h5" sx={{ mb: 2 }}>
+            <CustomText variant="h5" color="black" align="left">
               New Task
             </CustomText>
-            <CustomText variant="subtitle1">Title</CustomText>
+            <CustomText variant="h5" color="black" align="left">
+              Title
+            </CustomText>
             <input
               type="text"
               className="border-2"
@@ -123,17 +111,11 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
               onChange={(e) => handleInputChange("title", e.target.value)}
               value={form.title}
             />
-            {/* <Input type="text" className='border-2' placeholder='Title' onChange={handleChange} value={title}></Input> */}
-            {/* <CustomText>Description</CustomText>
-            <input
-              type="text"
-              className="border-2"
-              placeholder="Enter Description here"
-              onChange={(e) => handleInputChange("description", e.target.value)}
-            /> */}
             <div className="flex ">
               <div className="grow">
-                <CustomText>Due Date</CustomText>
+                <CustomText variant="h5" color="black" align="left">
+                  Due Date
+                </CustomText>
                 <input
                   type="date"
                   className="border-2"
@@ -143,14 +125,9 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
                 />
               </div>
               <div className="">
-                <CustomText>Status</CustomText>
-
-                {/* <input
-                  type="text"
-                  className="border-2"
-                  placeholder="Select Status"
-                  onChange={(e) => handleInputChange("status", e.target.value)}
-                /> */}
+                <CustomText variant="h5" color="black" align="left">
+                  Status
+                </CustomText>
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
@@ -173,7 +150,9 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
                 </Box>
               </div>
             </div>
-            <CustomText>Tags</CustomText>
+            <CustomText variant="h5" color="black" align="left">
+              Tags
+            </CustomText>
             <input
               type="text"
               className="border-2"
@@ -197,4 +176,10 @@ export default function CreateTaskModal({ onCreateClick, onEditClick, card }) {
 
 CreateTaskModal.propTypes = {
   onClick: PropTypes.func,
+  onCreateClick: PropTypes.func,
+  onEditClick: PropTypes.func,
+  card: PropTypes.object,
+  closeModal: PropTypes.any,
+  openModal: PropTypes.any,
+  openModalFunc: PropTypes.func,
 };

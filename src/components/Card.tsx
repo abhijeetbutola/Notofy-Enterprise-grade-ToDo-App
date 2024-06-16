@@ -47,10 +47,10 @@ function Card({ title, dueDate, tags, onEditClick, ...rest }: ICard) {
           })}
       </div>
 
-      <p className="font-semibold text-[14px] px-4 mb-2">{title}</p>
+      <p className="font-[500] text-[14px] px-4 mb-3">{title}</p>
       <div className="flex items-center mb-2 px-4">
-        <FaCalendarAlt />
-        <p className="text-[12px] text-[#62708D] px-2">
+        <FaCalendarAlt style={{ height: "12px" }} />
+        <p className="text-[11px] text-[#62708D] px-1">
           Due Date {format(dueDate, "dd MMM yyyy")}
         </p>
       </div>
@@ -59,7 +59,7 @@ function Card({ title, dueDate, tags, onEditClick, ...rest }: ICard) {
           Edit
         </button>
         <MdDeleteOutline />
-        <a className="text-[12px] px-2 text-red-700">Delete</a>
+        <a className="text-[12px] px-1 text-red-700">Delete</a>
       </div>
       {/* <Button className="border-2 border-black">Add</Button> */}
       {/* <div>
