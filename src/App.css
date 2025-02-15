@@ -1,3 +1,12 @@
+/* App.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: rgb(226, 227, 228);
+  background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4));
+}
+
 * {
   box-sizing: border-box;
 }
@@ -7,7 +16,7 @@ body {
   margin: 0px;
   padding: 0px;
   height: 100%;
-  background-color: rgb(245, 243, 235);
+  /* background-color: rgb(245, 243, 235); */
 }
 
 #root {

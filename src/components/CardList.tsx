@@ -18,13 +18,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+import { FaGreaterThan } from "react-icons/fa6";
+import { FaLessThan } from "react-icons/fa6";
+
 function CardList() {
   const date: Date | null = useSelector(
     (state: RootState) => state.calendar.value,
   );
   const dispatch = useDispatch();
-  const [filter, setFilter] = useState({ sort: false });
 
+  const [filter, setFilter] = useState({ sort: false });
   const [cards, setCards] = useState<Array<ITask>>([
     {
       id: "lvwchi4kvkrny",
@@ -527,11 +530,11 @@ function CardList() {
       tags: ["home", "personal", "work", "important", "urgent"],
     },
   ]);
-  console.log(cards);
 
+  // console.log(cards);
   const [filterCards, setFilterCards] = useState([...cards]);
-
-  const [selectedTask, setSelectedTask] = useState<ITask>();
+  const [selectedTask, setSelectedTask] = useState<ITask | null>();
+  const [buttonClick, setButtonClick] = useState(false);
 
   useEffect(() => {
     if (!date) {
@@ -593,7 +596,7 @@ function CardList() {
     }
   };
 
-  const handleCreateButtonClick = (card) => {
+  const handleCreateButtonClick = (card: ITask) => {
     console.log(card);
 
     setCards([card, ...cards]);
@@ -613,7 +616,7 @@ function CardList() {
     }
   };
 
-  const handleEditTask = (card) => {
+  const handleEditTask = (card: ITask) => {
     const index = cards.findIndex((cardInCards) => {
       return cardInCards.id === card.id;
     });
@@ -622,7 +625,19 @@ function CardList() {
     setCards(tempArray);
   };
 
-  // console.log(date);
+  const handleModalOpen = () => {
+    setButtonClick(true);
+  };
+
+  const handleModalClose = () => {
+    setButtonClick(false);
+    setSelectedTask(null);
+  };
+
+  const handleEditCard = (value) => {
+    setSelectedTask(value);
+    handleModalOpen();
+  };
 
   return (
     <div className="m-4 bg-white rounded-md overflow-hidden w-full shadow-md overflow-x-auto">
@@ -633,12 +648,22 @@ function CardList() {
           onSubmit={handleFormSubmit}
         ></SearchBar>
         {/* </div> */}
-        <div className="font-semibold">
-          <button onClick={handleDateChange}>-</button>
+        <div className="font-semibold flex gap-2 items-center">
+          <Button
+            className="p-2 border-solid border-black rounded-full border-2"
+            onClick={handleDateChange}
+          >
+            <FaLessThan />
+          </Button>
           {date && (
             <span>{format(new Date(date).toDateString(), "dd MMM yyyy")}</span>
           )}
-          <button onClick={handleDateChange}>+</button>
+          <Button
+            className="p-2 border-solid border-black rounded-full border-2"
+            onClick={handleDateChange}
+          >
+            <FaGreaterThan />
+          </Button>
         </div>
         <div>
           <span className="ml-4">Sort by </span>
@@ -660,7 +685,17 @@ function CardList() {
           </DemoContainer>
         </LocalizationProvider>
       </div>
+      <Button
+        onClick={handleModalOpen}
+        className="w-64 border-2 my-2 px-1 bg-cover bg-center bg-blue-200 ml-4 bg-no-repeat addButton rounded-md"
+        disabled={false}
+      >
+        + Add Task
+      </Button>
       <MyModal
+        openModal={buttonClick}
+        openModalFunc={handleModalOpen}
+        closeModal={handleModalClose}
         card={selectedTask}
         onCreateClick={handleCreateButtonClick}
         onEditClick={handleEditTask}
@@ -672,11 +707,7 @@ function CardList() {
             {filterCards
               .filter((card) => card.status === "planned")
               .map((card, index) => (
-                <Card
-                  {...card}
-                  onEditClick={setSelectedTask}
-                  key={index}
-                ></Card>
+                <Card {...card} onEditClick={handleEditCard} key={index}></Card>
               ))}
           </div>
         </div>
@@ -686,11 +717,7 @@ function CardList() {
             {filterCards
               .filter((card) => card.status === "ongoing")
               .map((card, index) => (
-                <Card
-                  {...card}
-                  onEditClick={setSelectedTask}
-                  key={index}
-                ></Card>
+                <Card {...card} onEditClick={handleEditCard} key={index}></Card>
               ))}
           </div>
         </div>
@@ -700,11 +727,7 @@ function CardList() {
             {filterCards
               .filter((card) => card.status === "completed")
               .map((card, index) => (
-                <Card
-                  {...card}
-                  onEditClick={setSelectedTask}
-                  key={index}
-                ></Card>
+                <Card {...card} onEditClick={handleEditCard} key={index}></Card>
               ))}
           </div>
         </div>
